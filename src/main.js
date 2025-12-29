@@ -15,12 +15,21 @@ async function init() {
       console.log("Error", err)
     }
   }
+  document.getElementById('startStream').onclick = async () => {
+    document.getElementById('container').innerHTML = ''
+    console.log("Started streaming")
+    llmObj.stream(document.getElementById('tb1').value, (text) => {
+      const html = document.getElementById('container').innerHTML
+      document.getElementById('container').innerHTML = `${html === '' ? '' : `${html} `}${text}`
+    })
+  }
 }
 document.querySelector('#app').innerHTML = `
-  <div id = "container" style = "position: absolute; width: 500px;height: 500px;left: 10%; top: 20%">
+  <div id = "container" style = "position: absolute; width: 800px;height: 500px;left: 10%; top: 35%">
   </div>   
-  <button id = "start" style = "position: absolute; left: 40%; top: 0px">Start</button>
-  <input type = "text" id = "tb1" style = "position: absolute; left: 0px; top: 0px, height: 80px, width: 200px">
+  <button id = "start" style = "position: absolute; left: 52%; top: 20px">Start</button>
+  <button id = "startStream" style = "position: absolute; left: 60%; top: 20px">Start Stream</button>
+  <textarea rows="5" cols = "70" id = "tb1" style = "position: absolute; left: 50px; top: 20px;">
 `
 
 init()

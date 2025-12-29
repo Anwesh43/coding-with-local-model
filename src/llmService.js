@@ -35,6 +35,23 @@ const llmService = async (systemPrompt) => {
             })
             return response
 
+        },
+
+        async stream(prompt, cb) {
+            messages.push({
+                role: "user",
+                content: prompt
+            })
+            const chunks = []
+            const response = await session.promptStreaming(messages)
+            for await (const chunk of response) {
+                cb(chunk)
+                chunks.push(chunk)
+            }
+            messages.push({
+                role: "assistant",
+                content: chunks.join(" ")
+            })
         }
     }
 }

@@ -87,7 +87,7 @@ function indentCode(codeStr) {
         newLines.push(currLine)
     }
     console.log("NEW_LINES", newLines)
-    return newLines.map(line => line.sentence).join("</br>")
+    return newLines.map(line => line.sentence).join("<br>")
 }
 
 export default indentCode

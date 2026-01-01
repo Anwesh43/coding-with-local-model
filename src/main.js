@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import llmService from './llmService'
 import { CODING_SYSTEM_PROMPT } from './prompts'
 import indentCode from './utils'
+import { sanitizeInput, validateInput, escapeHtml, sanitizeHtmlOutput } from './security'
 
 class StreamResult {
   result = ""
@@ -36,30 +37,56 @@ async function init() {
     sr.onresult = (event) => {
       console.log(event.results)
       const transcription = event.results[0][0].transcript
-      streamResult.reset()
-      llmObj.stream(transcription, (text) => {
-        streamResult.addWord(text)
-        const html = indentCode(streamResult.getWord().replace("javascript", '').replaceAll("```", "").replaceAll("\n", '').replace(/\/\*\*[\s\S]*?\*\//g, '').trim())
-        document.getElementById('container').innerHTML = html
-      })
+      try {
+        const sanitized = sanitizeInput(transcription)
+        streamResult.reset()
+        llmObj.stream(sanitized, (text) => {
+          streamResult.addWord(text)
+          // Format code first, then sanitize HTML output to prevent XSS
+          const codeText = streamResult.getWord().replace("javascript", '').replaceAll("```", "").replaceAll("\n", '').replace(/\/\*\*[\s\S]*?\*\//g, '').trim()
+          const html = indentCode(codeText)
+          const sanitizedHtml = sanitizeHtmlOutput(html)
+          document.getElementById('container').innerHTML = sanitizedHtml
+        })
+      } catch (error) {
+        alert(error.message || 'Invalid input')
+      }
     }
     document.getElementById('start').onclick = async () => {
       try {
-        console.log(document.getElementById('tb1').value)
-        const response = await llmObj.callLLM(document.getElementById('tb1').value)
+        const input = document.getElementById('tb1').value
+        const validation = validateInput(input)
+        if (!validation.isValid) {
+          alert(validation.error || 'Invalid input')
+          return
+        }
+        console.log(validation.sanitized)
+        const response = await llmObj.callLLM(validation.sanitized)
         console.log("RESP", response)
-        document.getElementById('container').innerHTML = response
+        // Escape HTML in response to prevent XSS
+        const escapedResponse = escapeHtml(response)
+        document.getElementById('container').innerHTML = escapedResponse.replace(/\n/g, '<br>')
       } catch (err) {
         console.log("Error", err)
+        alert(err.message || 'An error occurred')
       }
     }
     document.getElementById('startStream').onclick = async () => {
+      const text = document.getElementById('tb1').value
+      const validation = validateInput(text)
+      if (!validation.isValid) {
+        alert(validation.error || 'Invalid input')
+        return
+      }
       streamResult.reset()
       console.log("Started streaming")
-      llmObj.stream(document.getElementById('tb1').value, (text) => {
+      llmObj.stream(validation.sanitized, (text) => {
         streamResult.addWord(text)
-        const html = indentCode(streamResult.getWord().replace("javascript", '').replaceAll("```", "").replaceAll("\n", '').replace(/\/\*\*[\s\S]*?\*\//g, '').trim())
-        document.getElementById('container').innerHTML = html
+        // Format code first, then sanitize HTML output to prevent XSS
+        const codeText = streamResult.getWord().replace("javascript", '').replaceAll("```", "").replaceAll("\n", '').replace(/\/\*\*[\s\S]*?\*\//g, '').trim()
+        const html = indentCode(codeText)
+        const sanitizedHtml = sanitizeHtmlOutput(html)
+        document.getElementById('container').innerHTML = sanitizedHtml
       })
     }
 

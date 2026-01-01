@@ -9,7 +9,13 @@
     linear-gradient(135deg, #0d1117 0%, #151b23 50%, #111827 100%);
   color: #f3f4f6;
   overflow-y: auto;
+  overflow-x: hidden;
   white-space: pre-wrap;
+  padding: 30px;
+  padding-bottom: 50px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
 }
 
 #left-container {
@@ -62,7 +68,7 @@
   width: 80%;
   min-height: 130px;
 
-  padding: 12px 14px;
+  padding: 12px 10px;
   border-radius: 14px;
 
   border: 1px solid rgba(148, 163, 184, .55);

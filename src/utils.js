@@ -35,7 +35,7 @@ class Line {
     sentence = ""
 
     addCharacterInSentence(character) {
-        if (this.sentence.length === 0) {
+        if (this.sentence.length === 0 && character !== ' ') {
             this.sentence = `${character}`
         } else {
             this.sentence = `${this.sentence}${character}`

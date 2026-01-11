@@ -37,6 +37,7 @@ async function init() {
     sr.onresult = (event) => {
       console.log(event.results)
       const transcription = event.results[0][0].transcript
+      document.getElementById('tb1').value = transcription
       try {
         const sanitized = sanitizeInput(transcription)
         streamResult.reset()

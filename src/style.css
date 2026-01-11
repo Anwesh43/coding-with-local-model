@@ -148,6 +148,20 @@
   gap: 20px;
 }
 
+#startStream:active {
+  transform: translateY(1px) scale(.98);
+  box-shadow:
+    0 6px 18px rgba(37, 99, 235, .6),
+    inset 0 3px 10px rgba(0, 0, 0, .4);
+}
+
+#speak:active {
+  transform: translateY(1px) scale(.98);
+  box-shadow:
+    0 6px 18px rgba(37, 99, 235, .6),
+    inset 0 3px 10px rgba(0, 0, 0, .4);
+}
+
 @media screen and (max-width: 600px) {
   #container {
     width: 100%;

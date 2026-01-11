@@ -38,6 +38,7 @@ async function init() {
       console.log(event.results)
       const transcription = event.results[0][0].transcript
       document.getElementById('tb1').value = transcription
+      document.getElementById('startStream').disabled = false
       try {
         const sanitized = sanitizeInput(transcription)
         streamResult.reset()
@@ -93,6 +94,8 @@ async function init() {
     }
 
     document.getElementById('speak').onclick = () => {
+      document.getElementById('startStream').disabled = true
+      document.getElementById('tb1').value = "Listening your coding problem..."
       sr.start()
     }
   } catch (ex) {

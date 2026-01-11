@@ -10,7 +10,7 @@ class StreamResult {
   result = ""
   addWord(word) {
     if (this.result !== "") {
-      this.result = `${this.result} ${word}`
+      this.result = `${this.result}${word}`
     } else {
       this.result = `${word}`
     }
@@ -44,10 +44,11 @@ async function init() {
         llmObj.stream(sanitized, (text) => {
           streamResult.addWord(text)
           // Format code first, then sanitize HTML output to prevent XSS
-          const codeText = streamResult.getWord().replace("javascript", '').replaceAll("```", "").replaceAll("\n", '').replace(/\/\*\*[\s\S]*?\*\//g, '').trim()
+          const codeText = streamResult.getWord().replace("javascript", '').replaceAll("```", "").replaceAll("\n", '').replace(/\/\/.*/g, '').replace(/\/\*\*[\s\S]*?\*\//g, '').trim()
           const html = indentCode(codeText)
           const sanitizedHtml = sanitizeHtmlOutput(html)
           document.getElementById('container').innerHTML = sanitizedHtml
+          //console.log("CodeText", streamResult)
         })
       } catch (error) {
         alert(error.message || 'Invalid input')

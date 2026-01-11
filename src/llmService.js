@@ -50,7 +50,7 @@ const llmService = async (systemPrompt) => {
             }
             messages.push({
                 role: "assistant",
-                content: chunks.join(" ")
+                content: chunks.join("")
             })
         }
     }

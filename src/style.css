@@ -79,6 +79,7 @@
   font-family: "JetBrains Mono", "Fira Code", monospace;
   resize: vertical;
   outline: none;
+  field-sizing: content;
 }
 
 #tb1::placeholder {

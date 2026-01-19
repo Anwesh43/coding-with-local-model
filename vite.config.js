@@ -11,6 +11,14 @@ export default defineConfig({
             devOptions: {
                 enabled: true // This allows testing on localhost
             }
-        })
+        }),
+        viteStaticCopy({
+            targets: [
+                {
+                    src: './serviceWorker.js', // correct path to this file.
+                    dest: './', // root of your output directory
+                },
+            ],
+        }),
     ]
 });

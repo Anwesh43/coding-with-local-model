@@ -10,7 +10,7 @@ const webLLMService = async (systemPrompt) => {
     }
     let engine = null
     if (location.hostname !== "localhost") {
-        navigator.serviceWorker.register(new URL("serviceWorker.js", import.meta.url),  // worker script
+        navigator.serviceWorker.register(new URL("service-worker.js", import.meta.url),  // worker script
             { type: "module" },
         ).then(console.log)
         engine = await CreateServiceWorkerMLCEngine(MODEL, { initProgressCallback })

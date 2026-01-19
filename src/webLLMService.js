@@ -9,14 +9,15 @@ const webLLMService = async (systemPrompt) => {
         console.log("Loading model with progress", progress)
     }
     let engine = null
-    if (location.hostname !== "localhost") {
-        navigator.serviceWorker.register(new URL("service-worker.js", import.meta.url),  // worker script
-            { type: "module" },
-        ).then(console.log)
-        engine = await CreateServiceWorkerMLCEngine(MODEL, { initProgressCallback })
-    } else {
-        engine = await CreateMLCEngine(MODEL, { initProgressCallback })
-    }
+    // if (location.hostname !== "localhost") {
+    //     navigator.serviceWorker.register(new URL("service-worker.js", import.meta.url),  // worker script
+    //         { type: "module" },
+    //     ).then(console.log)
+    //     engine = await CreateServiceWorkerMLCEngine(MODEL, { initProgressCallback })
+    // } else {
+
+    // }
+    engine = await CreateMLCEngine(MODEL, { initProgressCallback })
     const messages = [
         {
             role: "system", content: systemPrompt,

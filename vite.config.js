@@ -12,7 +12,7 @@ export default defineConfig({
                 enabled: true // This allows testing on localhost
             },
             srcDir: 'src',
-            filename: 'serviceWorker.js',
+            filename: 'service-worker.js',
             strategies: 'injectManifest',
             injectRegister: false,
             manifest: false,

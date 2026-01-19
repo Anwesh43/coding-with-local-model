@@ -1,4 +1,4 @@
-import { CreateMLCEngine } from "@mlc-ai/web-llm"
+import { CreateMLCEngine, CreateServiceWorkerMLCEngine } from "@mlc-ai/web-llm"
 
 const MODEL = 'Qwen2.5-Coder-1.5B-Instruct-q4f32_1-MLC'
 
@@ -8,7 +8,15 @@ const webLLMService = async (systemPrompt) => {
     const initProgressCallback = (progress) => {
         console.log("Loading model with progress", progress)
     }
-    const engine = await CreateMLCEngine(MODEL, { initProgressCallback })
+    let engine = null
+    if (location.hostname !== "localhost") {
+        navigator.serviceWorker.register(new URL("src/serviceWorker.js", import.meta.url),  // worker script
+            { type: "module" },
+        ).then(console.log)
+        engine = await CreateServiceWorkerMLCEngine(MODEL, { initProgressCallback })
+    } else {
+        engine = await CreateMLCEngine(MODEL, { initProgressCallback })
+    }
     const messages = [
         {
             role: "system", content: systemPrompt,

@@ -70,6 +70,8 @@ async function init() {
         alert(error.message || 'Invalid input')
       }
     }
+  } else {
+    document.getElementById('speak').style.display = 'none'
   }
   document.getElementById('start').onclick = async () => {
     try {

@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
-
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 export default defineConfig({
     plugins: [
         VitePWA({

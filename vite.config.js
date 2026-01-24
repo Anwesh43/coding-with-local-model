@@ -5,20 +5,9 @@ export default defineConfig({
     plugins: [
         VitePWA({
             registerType: 'autoUpdate',
-            workbox: { // Configuration for workbox
-                maximumFileSizeToCacheInBytes: 10 * 1024 ** 2, // Sets the limit to 5 MB
-            },
-            devOptions: {
-                enabled: true // This allows testing on localhost
-            },
-            srcDir: 'src',
-            filename: 'service-worker.js',
-            strategies: 'injectManifest',
-            injectRegister: false,
-            manifest: false,
-            injectManifest: {
-                injectionPoint: undefined,
-            },
+            workbox: {
+                globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+            }
         }),
     ]
 });

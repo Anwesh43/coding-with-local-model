@@ -116,6 +116,11 @@ async function init() {
     document.getElementById('tb1').value = "Listening your coding problem..."
     sr.start()
   }
+
+  document.getElementById('tb1').oninput = function () {
+    this.style.height = 'auto'
+    this.style.height = this.scrollHeight + "px";
+  }
 }
 document.querySelector('#app').innerHTML = `
   <div id = "container">

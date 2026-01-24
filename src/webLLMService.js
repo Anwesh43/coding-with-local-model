@@ -1,8 +1,11 @@
-import { CreateMLCEngine, CreateServiceWorkerMLCEngine } from "@mlc-ai/web-llm"
+import { CreateMLCEngine, CreateServiceWorkerMLCEngine, prebuiltAppConfig } from "@mlc-ai/web-llm"
+
 
 const MODEL = 'Qwen2.5-Coder-1.5B-Instruct-q4f32_1-MLC'
 
 const webLLMService = async (systemPrompt) => {
+
+    console.log("PREBUILD APP CONFIG", prebuiltAppConfig)
 
     let isModelLoaded = false
     const initProgressCallback = (progress) => {
@@ -17,7 +20,13 @@ const webLLMService = async (systemPrompt) => {
     // } else {
 
     // }
-    engine = await CreateMLCEngine(MODEL, { initProgressCallback })
+    const appConfig = {
+        ...prebuiltAppConfig,
+        useIndexedDBCache: true,
+    }
+    engine = await CreateMLCEngine(MODEL, {
+        initProgressCallback, appConfig
+    })
     const messages = [
         {
             role: "system", content: systemPrompt,
